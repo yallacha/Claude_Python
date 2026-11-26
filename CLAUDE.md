@@ -6,7 +6,8 @@
 
 - AI(Claude)를 이용해 Python 코드를 작성하는 저장소다.
 - 원격 저장소: https://github.com/yallacha/Claude_Python (비공개, 기본 브랜치 `main`)
-- 아직 Python 코드는 없다. 코드가 생기면 실행·테스트 방법을 이 파일에 추가한다.
+- 현재 과제: OEM-SWR-001 기반 전자식 차일드락 제어 SW (`src/childlock/`). 개발 계획과 결정 사항은 `docs/00_plan/개발계획.md`에 있다. 원본 사양서는 `OEM/`에 있고 저장소에 커밋하지 않는다.
+- 단계(개발 계획 1장)가 끝날 때마다 사용자에게 보고하고 다음 단계로 넘어간다.
 
 ## 개발 환경
 
@@ -45,12 +46,14 @@
 | 기준 | 목표 | 측정 방법 |
 |---|---|---|
 | 단위 테스트 성공률 | 100% (실패 0건) | `python -m pytest` |
-| 브랜치 커버리지 | **반드시** 100% | `python -m pytest --cov=src --cov-branch --cov-fail-under=100` |
-| 주석률 | 20% 이상 (파일 단위) | (주석 줄 + docstring 줄) ÷ (코드 줄 + 주석 줄 + docstring 줄), 빈 줄 제외 |
-| 함수 길이 | 순수 코드 50줄 이하 | lizard NLOC (빈 줄·주석 제외) |
-| 순환 복잡도 | 함수당 **반드시** 10 이하 | lizard CCN, Ruff `C901`(max-complexity 10) |
-| 정적 분석 | 경고 0건 | `ruff check .`, `ruff format --check .` |
+| 브랜치 커버리지 | **반드시** 100% (`src`, `tools`) | `python -m pytest --cov --cov-branch --cov-fail-under=100` |
+| 주석률 | 20% 이상 (파일 단위) | `python -m tools.comment_ratio src tools --min 20`. (주석 줄 + docstring 줄) ÷ (코드 줄 + 주석 줄 + docstring 줄), 빈 줄 제외, 코드 뒤에 붙은 주석은 코드 줄 |
+| 함수 길이 | 순수 코드 50줄 이하 | `python -m lizard src tools -w -Tnloc=50 -Tcyclomatic_complexity=10` (NLOC: 빈 줄·주석 제외) |
+| 순환 복잡도 | 함수당 **반드시** 10 이하 | 위 lizard 명령(CCN), Ruff `C901`(max-complexity 10) |
+| 정적 분석 | 경고 0건 | `python -m ruff check .`, `python -m ruff format --check .` |
 | 명명 규칙 | Google Python Style Guide | Ruff `N`(pep8-naming) 규칙 |
+
+- 도구 버전은 `requirements-dev.txt`, 설정은 `pyproject.toml`에 있다. `.claude/` 아래 스킬 보조 스크립트는 제품 코드가 아니므로 검사 대상에서 제외한다.
 
 - 브랜치 커버리지 100%를 달성하지 못하면 달성할 때까지 테스트를 보강한다. 커버리지를 맞추려고 의미 없는 테스트를 만들지 않는다.
 - 커버리지 측정 제외(`# pragma: no cover`)는 진입점(`if __name__ == "__main__":`)이나 실제로 만들 수 없는 방어 코드에만, 같은 줄에 사유를 적은 경우에 허용한다.
@@ -74,6 +77,7 @@
 
 - Jenkins는 이 PC(172.16.7.124, http://localhost/)에서 서비스로 실행 중이다. 홈: `C:\ProgramData\Jenkins\.jenkins`
 - 사설 IP라 GitHub webhook이 닿지 않는다. 변경은 SCM 폴링으로 감지한다.
+- 품질 검사 job: `Claude_Python-quality` (Multibranch Pipeline). 5분마다 원격 브랜치를 검색해 저장소의 `Jenkinsfile`로 브랜치별 품질 검사를 실행한다.
 - Windows batch 단계는 콘솔 한글 깨짐을 막기 위해 맨 앞에 `chcp 65001 > nul`과 `set PYTHONUTF8=1`을 넣는다.
 
 ## Claude Code 설정
