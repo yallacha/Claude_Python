@@ -8,6 +8,13 @@
 | 베이스라인 | BL-SWR-1.0 (G1 승인 대기) |
 | 관련 문서 | `SWIF_SW인터페이스명세.md`, `UC_유스케이스.md`, `TRACE_추적성.md`, `REVIEW_검토기록.md`, `../00_plan/개발계획.md` |
 
+**변경 이력**
+
+| 버전 | 일자 | 내용 | 근거 |
+|---|---|---|---|
+| 1.0 | 2026-11-26 | 최초 베이스라인 (G1 승인) | PR #4 |
+| 1.1 | 2026-11-26 | SWR-004 거절 이유 코드 범위 수정, 검증 기준 ⑥ 추가 (승인 대기) | `../03_detailed_design/CR_변경요청.md` CR-01 |
+
 ## 1. 개요
 
 OEM-SWR-001의 OEM 요구 13건을 SW 요구사항으로 도출한다. ID는 OEM-SWR-001 9장 추적 계획(SWR-001~021)을 따르고, SWR-019는 결번이다(D-08). 판정 우선순위, 평가 주기, 초기 상태는 OEM 요구 여러 건에 걸친 공통 규칙이라 SWR-022~024로 추가 도출했다.
@@ -94,9 +101,9 @@ ASIL B 요구는 OEM이 ASIL B로 할당한 OEM-SR-001~004에서 도출된 요�
 
 | 속성 | 내용 |
 |---|---|
-| 요구사항 | SW는 운전자 명령을 판정 우선순위(SWR-022) 8순위로 처리해야 한다. 지정된 출력에 1~7순위 규칙 중 하나라도 적용되고 있으면 그 출력에는 명령을 적용하지 않고, `reason_code`를 상위 규칙이 접근위험이면 `approach_risk_<side>`(SWR-005), 그 밖에는 `driver_rejected`로 해야 한다. `side=all`이면 좌·우를 각각 판정한다. |
-| 검증 기준 | ① 차속 3.0 km/h 이상에서 해제 명령 → 출력 LOCK 유지, `driver_rejected`. ② `isofix_left=true`에서 좌측 해제 명령 → 좌측 LOCK 유지. ③ `ignition_on=false`에서 잠금 명령 → 출력 RELEASE 유지. ④ 화재 입력 중 잠금 명령 → RELEASE 유지. ⑤ `side=all` 해제 명령에서 좌측만 ISOFIX이면 우측만 RELEASE. |
-| 출처 | OEM-FR-001("일반 해제 허용조건"), D-01 |
+| 요구사항 | SW는 운전자 명령을 판정 우선순위(SWR-022) 8순위로 처리해야 한다. 지정된 출력에 1~7순위 규칙 중 하나라도 적용되고 있으면 그 출력에는 명령을 적용하지 않아야 한다. 이때 `reason_code`는 막은 규칙이 1~2순위이면 그 규칙의 이유 코드(`crash_confirmed`, `sensor_fault`, `input_stale`), 3순위 접근위험이면 `approach_risk_<side>`(SWR-005), 4~7순위이면 `driver_rejected`로 해야 한다. `side=all`이면 좌·우를 각각 판정한다. |
+| 검증 기준 | ① 차속 3.0 km/h 이상에서 해제 명령 → 출력 LOCK 유지, `driver_rejected`. ② `isofix_left=true`에서 좌측 해제 명령 → 좌측 LOCK 유지. ③ `ignition_on=false`에서 잠금 명령 → 출력 RELEASE 유지. ④ 화재 입력 중 잠금 명령 → RELEASE 유지. ⑤ `side=all` 해제 명령에서 좌측만 ISOFIX이면 우측만 RELEASE. ⑥ `sensor_fault=true` 중 해제 명령 → 출력 유지, `sensor_fault`. |
+| 출처 | OEM-FR-001("일반 해제 허용조건"), D-01, CR-01 |
 | 관련 IF | OEM-IF-004 |
 
 ### SWR-005 접근위험 도어 잠금과 해제 억제
