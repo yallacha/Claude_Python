@@ -6,6 +6,13 @@ venv/
 .env
 *.egg-info/
 .pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+reports/
+
+# OEM 원본 문서 (교육 과정 밖 배포 금지 조건)
+OEM/
 
 # Claude Code 개인 설정
 .claude/settings.local.json
