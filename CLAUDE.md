@@ -20,6 +20,13 @@
   - Git: `C:\Program Files\Git\cmd\git.exe`
   - PICT: `%LOCALAPPDATA%\pict\pict.exe`
 
+## 실행과 시험
+
+- 의존성 설치: `python -m pip install -r requirements-dev.txt` (제품 의존성은 `requirements.txt`)
+- 단위 시험: `python -m pytest` (`pyproject.toml`이 `src`를 경로에 추가한다)
+- Web 시뮬레이터: `PYTHONPATH=src`로 `python -m childlock.web` → http://127.0.0.1:8000
+- ASIL B 모듈(`model`, `validation`, `freshness`, `decision`, `controller`, `clock`)은 QM 모듈을 import하지 않는다. `tests/unit/test_architecture.py`가 검사한다.
+
 ## 개발 절차
 
 - 개발은 A-SPICE 절차를 기본으로 따른다. 단계와 산출물 위치는 다음과 같다.
