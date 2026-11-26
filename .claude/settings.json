@@ -1,0 +1,27 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"D:/Repo/Claude_Python/.claude/hooks/log-prompt.ps1\" -Mode prompt",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"D:/Repo/Claude_Python/.claude/hooks/log-prompt.ps1\" -Mode response",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
+
