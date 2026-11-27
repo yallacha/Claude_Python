@@ -1,0 +1,9 @@
+﻿CRASH:    NONE, PENDING, CONFIRMED
+SENSOR:   off, on
+RISKL:    off, on
+IGN:      on, off
+FORCED:   none, fire, overtemp, adult
+ISOFIXL:  off, on
+SPEED:    0.0, 50.0
+CMD:      none, lock_left, unlock_left, unlock_all
+PRIOR:    RR, LL, LR

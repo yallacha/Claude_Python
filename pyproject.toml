@@ -8,8 +8,9 @@ requires-python = ">=3.12,<3.13"
 line-length = 100
 target-version = "py312"
 src = ["src", "."]
-# .claude 아래 스킬 보조 스크립트는 제품 코드가 아니므로 품질 검사 대상에서 제외한다
-extend-exclude = [".claude"]
+# .claude 아래 스킬 보조 스크립트와 docs 아래 산출물 생성 스크립트(예: 시험 사양서 생성기)는
+# 제품 코드가 아니므로 품질 검사 대상에서 제외한다
+extend-exclude = [".claude", "docs"]
 
 [tool.ruff.lint]
 # E/W: pycodestyle, F: pyflakes, I: import 정렬, N: 명명 규칙(Google Python Style Guide),
